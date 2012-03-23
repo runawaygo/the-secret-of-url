@@ -1,18 +1,4 @@
 <html>
-	<div class='root'>
-		<div>
-			<button class="btn" id="backBtn">back</button>		
-			<button class="btn" id="forwardBtn">forward</button>
-			<input  id="goInput" style="height:28px;width:50px;"></input>
-			<button class ="btn" id="goBtn">go</button>
-		</div>
-		<ul>
-			<li><a id='mac' href="#mac">Mac</a></li>
-			<li><a id='windows' href="#windows">Windows</a></li>
-			<li><a id='linux' href="#linux">Linux</a></li>							
-		</ul>
-	</div>
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<style>
 		.highLight{
 			background-color:black;
@@ -33,15 +19,26 @@
 			background-color:black;
 			color:white;
 		}
+		
 	</style>
+	<div class='root'>
+		<div>
+			<button class="btn" id="backBtn">back</button>		
+			<button class="btn" id="forwardBtn">forward</button>
+			<input  id="goInput" value="0" style="height:28px;width:50px;"></input>
+			<button class ="btn" id="goBtn">go</button>
+		</div>
+		<ul>
+			<li><a id='mac'>Mac</a></li>
+			<li><a id='windows'>Windows</a></li>
+			<li><a id='linux'>Linux</a></li>							
+		</ul>
+	</div>
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
 	<script src="jquery-1.7.min.js" type="text/javascript" charset="utf-8"></script>
 	<script>
-		
 		$(function(){
-			$('li a').click(function(e){
-				highLight(this)
-				navigateTo(this.id)
-			})
 			$('#backBtn').click(function(e){
 				history.back()
 			})
@@ -53,21 +50,36 @@
 				value = parseInt(value)
 				history.go(value)
 			})
+			
+			$('a').click(function(){
+				history.pushState({},this.id,"#"+this.id)
+				history.go(0)
+			})
+			
+			function highlight(element){
+				$('a').removeClass('highlight')
+				$(element).addClass('highlight')	
+			}
+			
+			window.onpopstate = function(e){
+				var regex = /#.*/
+				var hashTag = regex.exec(window.location)
+				if(hashTag === null) return
+				hashTag[0]
+				switch(hashTag[0]){
+					case "#mac":
+						//dosomething else 
+						return
+					case "#windows":
+						//dosomething else 
+						return
+					case "#linux":
+						//dosomething else 
+						return
+					default:
+						return
+				}
+			}
 		})
-		function navigateTo(name){
-			history.pushState({hashTag:name},name,"#"+name)
-			history.go()
-		}
-		function highLight(element){
-			$('a').removeClass('highLight')
-			$(element).addClass('highLight')
-		}
-		
-		window.onpopstate = function(e){
-			var regexTag = /#.*/
-			var hashTag = regexTag.exec(window.location)
-			if(hashTag === null) return
-			//highLight(hashTag[0])
-		}
 	</script>
 </html>
